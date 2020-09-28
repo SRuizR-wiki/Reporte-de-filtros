@@ -35,7 +35,7 @@ LogActive = False
 site = wiki.Wiki()
 site.setMaxlag(-1)
 site.login(settings.bot, settings.botpass)
-AIV = page.Page(site, 'Wikipedia:Administrator intervention against vandalism/TB2')
+AIV = page.Page(site, 'Wikipedia:Vandalismo en curso')
 
 #TODO: Abuse log now available on Wikimedia IRC
 
@@ -112,7 +112,7 @@ class BotRunnerThread(threading.Thread):
 		self.bot.start()
 
 def sendToChannel(msg):
-	connections['command'].privmsg("#wikipedia-en-abuse-log", msg)
+	connections['command'].privmsg("#wikipedia-es-abusos", msg)
 	
 class StartupChecker(threading.Thread):
 	def run(self):
@@ -253,7 +253,7 @@ def main():
 	if not immediate or not vandalism:
 		raise Exception("Lists not initialised")
 	listcheck = time.time()
-	Cchannel = "#wikipedia-en-abuse-log"
+	Cchannel = "#wikipedia-es-abusos"
 	Cserver = "irc.freenode.net"
 	nickname = "MrZ-bot"
 	cbot = CommandBot(Cchannel, nickname, Cserver)
@@ -310,23 +310,23 @@ def main():
 			IRCut[username]+=1
 			# 5 hits in 5 mins
 			if IRCut[username] == 5 and not username in IRCreported:
-				sendToChannel("!alert - [[User:%s]] has tripped 5 filters within the last 5 minutes: "\
-				"http://en.wikipedia.org/wiki/Special:AbuseLog?wpSearchUser=%s"\
+				sendToChannel("!alert - [[Usuario:%s]] disparó 5 filtros antiabusos en los últimos 5 minutos: "\
+				"http://es.wikipedia.org/wiki/Especial:RegsitroAbusos?wpSearchUser=%s"\
 				%(username, urllib.quote(username)))
 				del IRCut[username]
 				IRCreported[username] = 1
 			# Hits on pagemoves
 			if action == 'move':
-				sendToChannel("!alert - [[User:%s]] has tripped a filter doing a pagemove"\
-				": http://en.wikipedia.org/wiki/Special:AbuseLog?details=%s"\
+				sendToChannel("!alert - [[Usuario:%s]] disparó un filtro antiabusos haciendo un traslado"\
+				": http://es.wikipedia.org/wiki/Especial:RegsitroAbusos?details=%s"\
 				%(username, str(logid)))
 			# Frequent hits on one article, would be nice if there was somewhere this could
 			# be reported on-wiki
 			titles[(ns,title)]+=1
 			if titles[(ns,title)] == 10 and not (ns,title) in IRCreported:
 				p = page.Page(site, title, check=False, followRedir=False, namespace=ns)
-				sendToChannel("!alert - 10 filters in the last 5 minutes have been tripped on [[%s]]: "\
-				"http://en.wikipedia.org/wiki/Special:AbuseLog?wpSearchTitle=%s"\
+				sendToChannel("!alert - Se han disparado 10 filtros en los últimos 5 minutos en [[%s]]: "\
+				"http://es.wikipedia.org/wiki/Especial:RegsitroAbusos?wpSearchTitle=%s"\
 				%(p.title.encode('utf8'), p.urltitle))
 				del titles[(ns,title)]
 				IRCreported[(ns,title)] = 1
@@ -353,18 +353,18 @@ def reportUser(u, filter=None, hit=None):
 	username = u.name.encode('utf8')
 	if filter:
 		name = filterName(filter)
-		reason = "Tripped [[Special:AbuseFilter/%(f)s|filter %(f)s]] (%(n)s) "\
-		"([{{fullurl:Special:AbuseLog|details=%(h)d}} details])."\
+		reason = "Disparó el [[Especial:FiltroAntiAbusos/%(f)s|filtro %(f)s]] (%(n)s) "\
+		"([{{fullurl:Especial:RegistroAbusos|details=%(h)d}} details])."\
 		% {'f':filter, 'n':name, 'h':hit}
 	else:
-		reason = "Tripped 10 abuse filters in the last 5 minutes: "\
+		reason = "Disparó 10 filtros antiabusos en los últimos 5 minutos: "\
 		"([{{fullurl:Special:AbuseLog|wpSearchUser=%s}} details])."\
 		% (urllib.quote(username))
-	editsum = "Reporting [[Special:Contributions/%s]]" % (username)
+	editsum = "Reportando a [[Especial:Contribuciones/%s]]" % (username)
 	if u.isIP:
-		line = "\n* {{IPvandal|%s}} - " % (username)
+		line = "\n* {{subst:ReportevandalismoIP|1=%s|2= - " % (username)}}
 	else:
-		line = "\n* {{Vandal|%s}} - " % (username)
+		line = "\n* {{subst:Reportevandalismo|1=%s|2= - " % (username)}}
 	line = line.decode('utf8')
 	line += reason+" ~~~~"
 	try:
@@ -393,7 +393,7 @@ def filterName(filterid):
 	
 def getLists():
 	global immediate, vandalism
-	lists = page.Page(site, "User:Mr.Z-bot/filters.js", check=False)
+	lists = page.Page(site, "Usuario:UmpireBOT/filtros.js", check=False)
 	cont = lists.getWikiText(force=True)
 	lines = cont.splitlines()
 	for line in lines:
@@ -404,7 +404,7 @@ def getLists():
 			type = type.strip()
 			filters = validateFilterList(filters, type)
 			if not filters:
-				sendToChannel("Syntax error detected in filter list page - [[User:Mr.Z-bot/filters.js]]")
+				sendToChannel("Syntax error detected in filter list page - [[Usuario:UmpireBOT/filtros.js]]")
 	vandalism = set([str(f) for f in vandalism])
 	immediate = set([str(f) for f in immediate])
 			
