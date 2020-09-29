@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2013 Alex Zaddach (mrzmanwiki@gmail.com) Derative work/modified by 'SRuizR'
+# Copyright 2013 Alex Zaddach (mrzmanwiki@gmail.com) Derative work/modified by 'SRuizR' (https://es.wikipedia.org/wiki/Usuario:SRuizR)
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -362,9 +362,9 @@ def reportUser(u, filter=None, hit=None):
 		% (urllib.quote(username))
 	editsum = "Reportando a [[Especial:Contribuciones/%s]]" % (username)
 	if u.isIP:
-		line = "\n* {{subst:ReportevandalismoIP|1=%s|2= - " % (username)
+		line = "\n* {{subst:ReportevandalismoIP|1=%s|2=" % (username)
 	else:
-		line = "\n* {{subst:Reportevandalismo|1=%s|2= - " % (username)
+		line = "\n* {{subst:Reportevandalismo|1=%s|2=" % (username)
 	line = line.decode('utf8')
 	line += reason+" }}"
 	try:
