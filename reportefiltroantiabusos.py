@@ -130,7 +130,7 @@ def checklag():
 	global connections, useAPI
 	waited = False
 	try:
-		testdb = MySQLdb.connect(db='enwiki_p', host="enwiki.labsdb", read_default_file="/data/project/zbot/replica.my.cnf")
+		testdb = MySQLdb.connect(db='eswiki_p', host="eswiki.labsdb", read_default_file="/data/project/umpbot/replica.my.cnf")
 		testcursor = testdb.cursor()
 	except: # server down
 		useAPI = True
@@ -158,17 +158,17 @@ def checklag():
 			# If maxlag is too high, just stop
 			if maxlag > 600 and not waited:
 				waited = True
-				sendToChannel("Server lag too high, stopping reports")
+				sendToChannel("Retraso del servidor demasiado alto, deteniendo reportes")
 			if waited and maxlag > 120:
 				time.sleep(120)
 				continue
 		break			
 	if waited:
-		sendToChannel("Restarting reports")
+		sendToChannel("Reiniciar reportes")
 		return True
 	return False
 
-db = MySQLdb.connect(db='enwiki_p', host="enwiki.labsdb", read_default_file="/data/project/zbot/replica.my.cnf")
+db = MySQLdb.connect(db='eswiki_p', host="eswiki.labsdb", read_default_file="/data/project/umpbot/replica.my.cnf")
 db.autocommit(True)
 cursor = db.cursor()
 	
@@ -251,11 +251,11 @@ def main():
 	sc.start()
 	getLists()
 	if not immediate or not vandalism:
-		raise Exception("Lists not initialised")
+		raise Exception("Listas no inicializadas")
 	listcheck = time.time()
 	Cchannel = "#wikipedia-es-abusos"
 	Cserver = "irc.freenode.net"
-	nickname = "MrZ-bot"
+	nickname = "UmpireBOT"
 	cbot = CommandBot(Cchannel, nickname, Cserver)
 	cThread = BotRunnerThread(cbot)
 	cThread.daemon = True
@@ -323,9 +323,9 @@ def main():
 			# Frequent hits on one article, would be nice if there was somewhere this could
 			# be reported on-wiki
 			titles[(ns,title)]+=1
-			if titles[(ns,title)] == 10 and not (ns,title) in IRCreported:
+			if titles[(ns,title)] == 5 and not (ns,title) in IRCreported:
 				p = page.Page(site, title, check=False, followRedir=False, namespace=ns)
-				sendToChannel("!alert - Se han disparado 10 filtros en los últimos 5 minutos en [[%s]]: "\
+				sendToChannel("!alert - Se han disparado 5 filtros en los últimos 5 minutos en [[%s]]: "\
 				"http://es.wikipedia.org/wiki/Especial:RegsitroAbusos?wpSearchTitle=%s"\
 				%(p.title.encode('utf8'), p.urltitle))
 				del titles[(ns,title)]
@@ -334,8 +334,8 @@ def main():
 			if filter not in vandalism.union(immediate):
 				continue
 			AIVut[username]+=1			
-			# 10 hits in 5 minutes
-			if AIVut[username] == 10 and not username in AIVreported:
+			# 5 hits in 5 minutes
+			if AIVut[username] == 5 and not username in AIVreported:
 				del AIVut[username]
 				reportUser(u)
 				AIVreported[username] = 1
@@ -354,19 +354,19 @@ def reportUser(u, filter=None, hit=None):
 	if filter:
 		name = filterName(filter)
 		reason = "Disparó el [[Especial:FiltroAntiAbusos/%(f)s|filtro %(f)s]] (%(n)s) "\
-		"([{{fullurl:Especial:RegistroAbusos|details=%(h)d}} details])."\
+		"([{{fullurl:Especial:RegistroAbusos|details=%(h)d}} registro])."\
 		% {'f':filter, 'n':name, 'h':hit}
 	else:
-		reason = "Disparó 10 filtros antiabusos en los últimos 5 minutos: "\
-		"([{{fullurl:Special:AbuseLog|wpSearchUser=%s}} details])."\
+		reason = "Disparó 5 filtros antiabusos en los últimos 5 minutos: "\
+		"([{{fullurl:Special:AbuseLog|wpSearchUser=%s}} registro])."\
 		% (urllib.quote(username))
 	editsum = "Reportando a [[Especial:Contribuciones/%s]]" % (username)
 	if u.isIP:
-		line = "\n* {{subst:ReportevandalismoIP|1=%s|2= - " % (username)}}
+		line = "\n* {{subst:ReportevandalismoIP|1=%s|2= - " % (username)
 	else:
-		line = "\n* {{subst:Reportevandalismo|1=%s|2= - " % (username)}}
+		line = "\n* {{subst:Reportevandalismo|1=%s|2= - " % (username)
 	line = line.decode('utf8')
-	line += reason+" ~~~~"
+	line += reason+" }}"
 	try:
 		AIV.edit(appendtext=line, summary=editsum)
 	except api.APIError: # hacky workaround for mystery error
