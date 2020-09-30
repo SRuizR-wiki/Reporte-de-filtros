@@ -40,7 +40,7 @@ AIV = page.Page(site, 'Wikipedia:Vandalismo en curso')
 #TODO: Abuse log now available on Wikimedia IRC
 
 class timedTracker(dict):
-	def __init__(self, args={}, expiry=300):
+	def __init__(self, args={}, expiry=1200):
 		dict.__init__(self, args)
 		self.expiry = expiry
 		self.times = set()
@@ -308,9 +308,9 @@ def main():
 			attempts.append((username, timestamp))
 			# IRC reporting checks
 			IRCut[username]+=1
-			# 5 hits in 5 mins
+			# 5 hits in 20 mins
 			if IRCut[username] == 5 and not username in IRCreported:
-				sendToChannel("!alert - [[Usuario:%s]] disparó 5 filtros antiabusos en los últimos 5 minutos: "\
+				sendToChannel("!alert - [[Usuario:%s]] disparó 5 filtros antiabusos en los últimos 20 minutos: "\
 				"http://es.wikipedia.org/wiki/Especial:RegsitroAbusos?wpSearchUser=%s"\
 				%(username, urllib.quote(username)))
 				del IRCut[username]
@@ -325,7 +325,7 @@ def main():
 			titles[(ns,title)]+=1
 			if titles[(ns,title)] == 5 and not (ns,title) in IRCreported:
 				p = page.Page(site, title, check=False, followRedir=False, namespace=ns)
-				sendToChannel("!alert - Se han disparado 5 filtros en los últimos 5 minutos en [[%s]]: "\
+				sendToChannel("!alert - Se han disparado 5 filtros en los últimos 20 minutos en [[%s]]: "\
 				"http://es.wikipedia.org/wiki/Especial:RegsitroAbusos?wpSearchTitle=%s"\
 				%(p.title.encode('utf8'), p.urltitle))
 				del titles[(ns,title)]
@@ -334,7 +334,7 @@ def main():
 			if filter not in vandalism.union(immediate):
 				continue
 			AIVut[username]+=1			
-			# 5 hits in 5 minutes
+			# 5 hits in 20 minutes
 			if AIVut[username] == 5 and not username in AIVreported:
 				del AIVut[username]
 				reportUser(u)
@@ -357,7 +357,7 @@ def reportUser(u, filter=None, hit=None):
 		"([{{fullurl:Especial:RegistroAbusos|details=%(h)d}} registro])."\
 		% {'f':filter, 'n':name, 'h':hit}
 	else:
-		reason = "Disparó 5 filtros antiabusos en los últimos 5 minutos: "\
+		reason = "Disparó 5 filtros antiabusos en los últimos 20 minutos: "\
 		"([{{fullurl:Special:AbuseLog|wpSearchUser=%s}} registro])."\
 		% (urllib.quote(username))
 	editsum = "Reportando a [[Especial:Contribuciones/%s]]" % (username)
