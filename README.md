@@ -1,2 +1,2 @@
 # Reporte-de-filtros
-# Por ahora este código será la base para crear el bot que denuncie disparos del filtro antiabusos.
+# Por aquí están las bases para crear el código para el bot que denuncie disparos del filtro antiabusos y reporte los bloqueos.
