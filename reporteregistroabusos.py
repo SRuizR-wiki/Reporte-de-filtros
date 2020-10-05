@@ -130,7 +130,7 @@ def checklag():
 	global connections, useAPI
 	waited = False
 	try:
-		testdb = MySQLdb.connect(db='eswiki_p', host="eswiki.labsdb", read_default_file="/data/project/umpbot/replica.my.cnf")
+		testdb = MySQLdb.connect(db='eswiki_p', host="eswiki.labsdb", read_default_file="/data/project/botdelatarea/replica.my.cnf")
 		testcursor = testdb.cursor()
 	except: # server down
 		useAPI = True
@@ -168,7 +168,7 @@ def checklag():
 		return True
 	return False
 
-db = MySQLdb.connect(db='eswiki_p', host="eswiki.labsdb", read_default_file="/data/project/umpbot/replica.my.cnf")
+db = MySQLdb.connect(db='eswiki_p', host="eswiki.labsdb", read_default_file="/data/project/botdelatarea/replica.my.cnf")
 db.autocommit(True)
 cursor = db.cursor()
 	
@@ -255,7 +255,7 @@ def main():
 	listcheck = time.time()
 	Cchannel = "#wikipedia-es-abusos"
 	Cserver = "irc.freenode.net"
-	nickname = "UmpireBOT"
+	nickname = "Nombre del bot"
 	cbot = CommandBot(Cchannel, nickname, Cserver)
 	cThread = BotRunnerThread(cbot)
 	cThread.daemon = True
@@ -358,7 +358,7 @@ def reportUser(u, filter=None, hit=None):
 		% {'f':filter, 'n':name, 'h':hit}
 	else:
 		reason = "Disparó 5 filtros antiabusos en los últimos 20 minutos: "\
-		"([{{fullurl:Special:AbuseLog|wpSearchUser=%s}} registro])."\
+		"([{{fullurl:Especial:RegistroAbusos|wpSearchUser=%s}} registro])."\
 		% (urllib.quote(username))
 	editsum = "Reportando a [[Especial:Contribuciones/%s]]" % (username)
 	if u.isIP:
@@ -393,7 +393,7 @@ def filterName(filterid):
 	
 def getLists():
 	global immediate, vandalism
-	lists = page.Page(site, "Usuario:SRuizR/filtrosUmpireBOT.js", check=False)
+	lists = page.Page(site, "Página de la lista", check=False)
 	cont = lists.getWikiText(force=True)
 	lines = cont.splitlines()
 	for line in lines:
@@ -404,7 +404,7 @@ def getLists():
 			type = type.strip()
 			filters = validateFilterList(filters, type)
 			if not filters:
-				sendToChannel("Error sintáctico detectado en la página de la lista de filtros - [[Usuario:SRuizR/filtrosUmpireBOT.js]]")
+				sendToChannel("Error sintáctico detectado en la página de la lista de filtros - [[Página de la lista]]")
 	vandalism = set([str(f) for f in vandalism])
 	immediate = set([str(f) for f in immediate])
 			
