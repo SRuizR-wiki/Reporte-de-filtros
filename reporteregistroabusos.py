@@ -112,7 +112,7 @@ class BotRunnerThread(threading.Thread):
 		self.bot.start()
 
 def sendToChannel(msg):
-	connections['command'].privmsg("#wikipedia-es-abusos", msg)
+	connections['command'].privmsg("#wikipedia-es-biblios", msg)
 	
 class StartupChecker(threading.Thread):
 	def run(self):
@@ -253,7 +253,7 @@ def main():
 	if not immediate or not vandalism:
 		raise Exception("Listas no inicializadas")
 	listcheck = time.time()
-	Cchannel = "#wikipedia-es-abusos"
+	Cchannel = "#wikipedia-es-biblios"
 	Cserver = "irc.freenode.net"
 	nickname = "Nombre del bot"
 	cbot = CommandBot(Cchannel, nickname, Cserver)
