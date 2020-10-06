@@ -302,6 +302,11 @@ def main():
 			if filter in immediate and not username in AIVreported:
 				reportUser(u, filter=filter, hit=logid)
 				AIVreported[username] = 1
+			if filter in immediate and not username in IRCreported:
+				sendToChannel("!alert - [[Usuario:%s]] disparó el filtro %(f)s (%(n)s)"\
+				"http://es.wikipedia.org/wiki/Especial:RegsitroAbusos?wpSearchUser=%s"\
+				%(username, urllib.quote(username)))
+				IRCreported[username] = 1
 			# Prevent multiple hits from the same edit attempt
 			if (username, timestamp) in attempts:
 				continue
