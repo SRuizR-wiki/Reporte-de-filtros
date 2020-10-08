@@ -320,21 +320,6 @@ def main():
 				%(username, urllib.quote(username)))
 				del IRCut[username]
 				IRCreported[username] = 1
-			# Hits on pagemoves
-			if action == 'move':
-				sendToChannel("!alert - [[Usuario:%s]] disparó un filtro antiabusos haciendo un traslado"\
-				": http://es.wikipedia.org/wiki/Especial:RegsitroAbusos?details=%s"\
-				%(username, str(logid)))
-			# Frequent hits on one article, would be nice if there was somewhere this could
-			# be reported on-wiki
-			titles[(ns,title)]+=1
-			if titles[(ns,title)] == 5 and not (ns,title) in IRCreported:
-				p = page.Page(site, title, check=False, followRedir=False, namespace=ns)
-				sendToChannel("!alert - Se han disparado 5 filtros en los últimos 20 minutos en [[%s]]: "\
-				"http://es.wikipedia.org/wiki/Especial:RegsitroAbusos?wpSearchTitle=%s"\
-				%(p.title.encode('utf8'), p.urltitle))
-				del titles[(ns,title)]
-				IRCreported[(ns,title)] = 1
 			# AIV reporting - check if the filter is in one of the lists
 			if filter not in vandalism.union(immediate):
 				continue
