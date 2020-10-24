@@ -258,7 +258,7 @@ def main():
 	listcheck = time.time()
 	Cchannel = "#wikipedia-es-abusos"
 	Cserver = "irc.freenode.net"
-	nickname = "Nombre del bot"
+	nickname = "UmpireBOT"
 	cbot = CommandBot(Cchannel, nickname, Cserver)
 	cThread = BotRunnerThread(cbot)
 	cThread.daemon = True
