@@ -389,7 +389,7 @@ def filterName(filterid):
 	
 def getLists():
 	global immediate, vandalism
-	lists = page.Page(site, "Página de la lista", check=False)
+	lists = page.Page(site, "Usuario:SRuizR/filtrosUmpireBOT.js", check=False)
 	cont = lists.getWikiText(force=True)
 	lines = cont.splitlines()
 	for line in lines:
@@ -400,7 +400,7 @@ def getLists():
 			type = type.strip()
 			filters = validateFilterList(filters, type)
 			if not filters:
-				sendToChannel("Error sintáctico detectado en la página de la lista de filtros - [[Página de la lista]]")
+				sendToChannel("Error sintáctico detectado en la página de la lista de filtros - [[Usuario:SRuizR/filtrosUmpireBOT.js]]")
 	vandalism = set([str(f) for f in vandalism])
 	immediate = set([str(f) for f in immediate])
 			
