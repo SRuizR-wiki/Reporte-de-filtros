@@ -133,7 +133,7 @@ def checklag():
 	global connections, useAPI
 	waited = False
 	try:
-		testdb = MySQLdb.connect(db='eswiki_p', host="eswiki.labsdb", read_default_file="/data/project/botdelatarea/replica.my.cnf")
+		testdb = MySQLdb.connect(db='eswiki_p', host="eswiki.labsdb", read_default_file="/data/project/UmpireBOT/replica.my.cnf")
 		testcursor = testdb.cursor()
 	except: # server down
 		useAPI = True
@@ -171,7 +171,7 @@ def checklag():
 		return True
 	return False
 
-db = MySQLdb.connect(db='eswiki_p', host="eswiki.labsdb", read_default_file="/data/project/botdelatarea/replica.my.cnf")
+db = MySQLdb.connect(db='eswiki_p', host="eswiki.labsdb", read_default_file="/data/project/UmpireBOT/replica.my.cnf")
 db.autocommit(True)
 cursor = db.cursor()
 	
