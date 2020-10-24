@@ -306,10 +306,10 @@ def main():
 				reportUser(u, filter=filter, hit=logid)
 				AIVreported[username] = 1
 			if filter in immediate and not username in IRCreported:
-				sendToChannel("!alert - [[Usuario:%s]] disparó el filtro %(f)s (%(n)s)"\
+				sendToChannel("Atención - [[Usuario:%s]] disparó el filtro %(f)s (%(n)s)"\
 				"http://es.wikipedia.org/wiki/Especial:RegsitroAbusos?wpSearchUser=%s"\
 				%(username, urllib.quote(username)))
-				sendToLibrarians("!alert - [[Usuario:%s]] disparó el filtro %(f)s (%(n)s)"\
+				sendToLibrarians("!biblio - [[Usuario:%s]] disparó el filtro %(f)s (%(n)s)"\
 				"http://es.wikipedia.org/wiki/Especial:RegsitroAbusos?wpSearchUser=%s"\
 				%(username, urllib.quote(username)))
 				IRCreported[username] = 1
@@ -321,7 +321,7 @@ def main():
 			IRCut[username]+=1
 			# 5 hits in 20 mins
 			if IRCut[username] == 5 and not username in IRCreported:
-				sendToChannel("!alert - [[Usuario:%s]] disparó 5 filtros antiabusos en los últimos 20 minutos: "\
+				sendToChannel("Atención - [[Usuario:%s]] disparó el filtro antiabusos 5 veces en los últimos 20 minutos: "\
 				"http://es.wikipedia.org/wiki/Especial:RegsitroAbusos?wpSearchUser=%s"\
 				%(username, urllib.quote(username)))
 				del IRCut[username]
@@ -353,7 +353,7 @@ def reportUser(u, filter=None, hit=None):
 		"([{{fullurl:Especial:RegistroAbusos|details=%(h)d}} registro])."\
 		% {'f':filter, 'n':name, 'h':hit}
 	else:
-		reason = "Disparó 5 filtros antiabusos en los últimos 20 minutos: "\
+		reason = "Disparó el filtro antiabusos 5 veces en los últimos 20 minutos: "\
 		"([{{fullurl:Especial:RegistroAbusos|wpSearchUser=%s}} registro])."\
 		% (urllib.quote(username))
 	editsum = "Reportando a [[Especial:Contribuciones/%s]]" % (username)
