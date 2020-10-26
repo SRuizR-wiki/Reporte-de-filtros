@@ -308,9 +308,11 @@ def main():
 			if filter in immediate and not username in IRCreported:
 				sendToChannel("Atención - [[Usuario:%s]] disparó el filtro %(f)s (%(n)s)"\
 				"http://es.wikipedia.org/wiki/Especial:RegsitroAbusos?wpSearchUser=%s"\
+				"http://es.wikipedia.org/wiki/Especial:Bloquear/%s"\
 				%(username, urllib.quote(username)))
 				sendToLibrarians("!biblio - [[Usuario:%s]] disparó el filtro %(f)s (%(n)s)"\
 				"http://es.wikipedia.org/wiki/Especial:RegsitroAbusos?wpSearchUser=%s"\
+				"http://es.wikipedia.org/wiki/Especial:Bloquear/%s"\
 				%(username, urllib.quote(username)))
 				IRCreported[username] = 1
 			# Prevent multiple hits from the same edit attempt
@@ -323,6 +325,7 @@ def main():
 			if IRCut[username] == 5 and not username in IRCreported:
 				sendToChannel("Atención - [[Usuario:%s]] disparó el filtro antiabusos 5 veces en los últimos 20 minutos: "\
 				"http://es.wikipedia.org/wiki/Especial:RegsitroAbusos?wpSearchUser=%s"\
+				"http://es.wikipedia.org/wiki/Especial:Bloquear/%s"\
 				%(username, urllib.quote(username)))
 				del IRCut[username]
 				IRCreported[username] = 1
