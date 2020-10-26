@@ -133,7 +133,7 @@ def checklag():
 	global connections, useAPI
 	waited = False
 	try:
-		testdb = MySQLdb.connect(db='eswiki_p', host="eswiki.labsdb", read_default_file="/data/project/UmpireBOT/replica.my.cnf")
+		testdb = MySQLdb.connect(db='eswiki_p', host="eswiki.labsdb", read_default_file="/data/project/umpirebot/replica.my.cnf")
 		testcursor = testdb.cursor()
 	except: # server down
 		useAPI = True
@@ -145,9 +145,9 @@ def checklag():
 		# Fallback to API if replag is too high
 		if replag > 300 and not useAPI:
 			useAPI = True
-			sendToChannel("Labs replag too high, using API fallback")
+			sendToChannel("Repetición del servidor demasiado alta, utilizando respaldo del servidor")
 		if replag < 120 and useAPI:
-			sendToChannel("Using Labs database")
+			sendToChannel("Usando base de datos de Labs")
 			useAPI = False
 		# Check maxlag if we're using the API
 		if useAPI:
@@ -171,7 +171,7 @@ def checklag():
 		return True
 	return False
 
-db = MySQLdb.connect(db='eswiki_p', host="eswiki.labsdb", read_default_file="/data/project/UmpireBOT/replica.my.cnf")
+db = MySQLdb.connect(db='eswiki_p', host="eswiki.labsdb", read_default_file="/data/project/umpirebot/replica.my.cnf")
 db.autocommit(True)
 cursor = db.cursor()
 	
