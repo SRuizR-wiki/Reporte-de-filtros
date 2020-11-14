@@ -114,9 +114,6 @@ class BotRunnerThread(threading.Thread):
 def sendToChannel(msg):
 	connections['command'].privmsg("#wikipedia-es-abusos", msg)
 	
-def sendToLibrarians(msg):
-	connections['command'].privmsg("#wikipedia-es-biblios", msg)
-	
 class StartupChecker(threading.Thread):
 	def run(self):
 		global IRCActive, LogActive
@@ -307,10 +304,6 @@ def main():
 				AIVreported[username] = 1
 			if filter in immediate and not username in IRCreported:
 				sendToChannel("Atención - [[Usuario:%s]] disparó el filtro %(f)s (%(n)s)"\
-				"http://es.wikipedia.org/wiki/Especial:RegsitroAbusos?wpSearchUser=%s"\
-				" Bloquear: http://es.wikipedia.org/wiki/Especial:Bloquear/%s"\
-				%(username, urllib.quote(username)))
-				sendToLibrarians("!biblio - [[Usuario:%s]] disparó el filtro %(f)s (%(n)s)"\
 				"http://es.wikipedia.org/wiki/Especial:RegsitroAbusos?wpSearchUser=%s"\
 				" Bloquear: http://es.wikipedia.org/wiki/Especial:Bloquear/%s"\
 				%(username, urllib.quote(username)))
